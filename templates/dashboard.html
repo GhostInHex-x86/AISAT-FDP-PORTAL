@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+
+{% block title %}
+Dashboard
+{% endblock %}
+
+{% block navbar %}
+<nav class="navbar navbar-expand-lg navbar-dark navbar-fdp">
+    <div class="container">
+        <a class="navbar-brand" href="{{ url_for('dashboard') }}">
+            <i class="bi bi-mortarboard-fill"></i>
+            FDP Portal
+        </a>
+        <a href="{{ url_for('logout') }}" class="btn btn-outline-light">
+            <i class="bi bi-box-arrow-right"></i>
+            Logout
+        </a>
+    </div>
+</nav>
+{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">
+    Faculty Dashboard
+</h2>
+<p class="text-muted">
+    Welcome back, <strong> {{ current_user.username }}</strong>
+</p>
+<div class="card shadow-sm">
+    <div class="card-header">
+        <h4 class="mb-0">
+            <i class="bi bi-file-earmark-arrow-up"></i>
+            FDP Submission
+        </h4>
+    </div>
+    <div class="card-body">
+        <form
+            action="{{ url_for('submit') }}"
+            method="POST"
+            enctype="multipart/form-data">
+            <div class="row g-3">
+                <!-- Program Name -->
+                <div class="col-md-6">
+                    <label class="form-label">
+                        Program Name
+                    </label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        name="program_name"
+                        required>
+                </div>
+                <!-- Program Type -->
+                <div class="col-md-6">
+                    <label class="form-label">
+                        Program Type
+                    </label>
+                    <select
+                        class="form-select"
+                        name="program_type"
+                        required>
+                        <option value>
+                            Select
+                        </option>
+                        <option value="FDP">
+                            FDP
+                        </option>
+                        <option value="Workshop">
+                            Workshop
+                        </option>
+                        <option value="Seminar">
+                            Seminar
+                        </option>
+                        <option value="Conference">
+                            Conference
+                        </option>
+                        <option value="Webinar">
+                            Webinar
+                        </option>
+                    </select>
+                </div>
+                <!-- Organizer -->
+                <div class="col-md-6">
+                    <label class="form-label">
+                        Organizer
+                    </label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        name="organizer"
+                        required>
+                </div>
+                <!-- Venue -->
+                <div class="col-md-6">
+                    <label class="form-label">
+                        Venue
+                    </label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        name="venue">
+                </div>
+                <!-- Start Date -->
+                <div class="col-md-6">
+                    <label class="form-label">
+                        Start Date
+                    </label>
+                    <input
+                        type="date"
+                        class="form-control"
+                        name="start_date"
+                        required>
+                </div>
+                <!-- End Date -->
+                <div class="col-md-6">
+                    <label class="form-label">
+                        End Date
+                    </label>
+                    <input
+                        type="date"
+                        class="form-control"
+                        name="end_date"
+                        required>
+                </div>
+                <!-- Certificate -->
+                <div class="col-12">
+                    <label class="form-label">
+                        Certificate
+                    </label>
+                    <input
+                        type="file"
+                        class="form-control"
+                        name="certificate"
+                        accept=".pdf,.jpg,.jpeg,.png"
+                        required>
+                </div>
+                <div class="col-12">
+                    <button
+                        type="submit"
+                        class="btn btn-primary px-4">
+                        <i class="bi bi-upload"></i>
+                        Submit
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

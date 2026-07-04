@@ -1,0 +1,31 @@
+:root {
+
+    --bs-primary: #1b365d;
+    /* Deep Navy */
+
+    --bs-secondary: #6c757d;
+
+    --bs-success: #198754;
+
+    --bs-danger: #dc3545;
+
+}
+
+.btn-primary {
+    background-color: #1b365d;
+    border-color: #1b365d;
+}
+
+.navbar-fdp {
+    background: linear-gradient(90deg, #1b365d, #274c77);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .15);
+}
+
+.navbar-fdp .navbar-brand {
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.navbar-fdp .btn-outline-light:hover {
+    color: #1b365d;
+}

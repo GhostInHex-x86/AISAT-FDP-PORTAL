@@ -1,0 +1,275 @@
+{% extends "base.html" %}
+
+{% block title %}
+Admin Dashboard
+{% endblock %}
+
+{% block navbar %}
+<nav class="navbar navbar-expand-lg navbar-dark navbar-fdp">
+    <div class="container">
+        <a class="navbar-brand" href="{{ url_for('admin') }}">
+            <i class="bi bi-speedometer2"></i>
+            Admin Dashboard
+        </a>
+        <a href="{{ url_for('logout') }}"
+            class="btn btn-outline-light">
+            <i class="bi bi-box-arrow-right"></i>
+            Logout
+        </a>
+    </div>
+
+</nav>
+{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">
+    Admin Dashboard
+</h2>
+<div class="row g-4 mb-5">
+    <div class="col-md-6">
+        <div class="card shadow-sm text-center"
+            role="button"
+            data-bs-toggle="modal"
+            data-bs-target="#facultyModal">
+            <div class="card-body">
+                <h2>{{ stats.total_faculty }}</h2>
+                <p class="text-muted mb-0">
+                    Faculty Members
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card shadow-sm text-center">
+            <div class="card-body">
+                <h2>{{ stats.total_submissions }}</h2>
+                <p class="text-muted mb-0">
+                    Total Submissions
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <form
+            method="GET"
+            action="{{ url_for('admin') }}">
+            <div class="row g-3 align-items-end">
+                <!-- Search -->
+                <div class="col">
+                    <label class="form-label">
+                        Search
+                    </label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        name="search"
+                        placeholder="Faculty, Program or Organizer"
+                        value="{{ request.args.get('search', '') }}">
+                </div>
+                <!-- Program Type -->
+                <div class="col-lg-2">
+                    <label class="form-label">
+                        Program Type
+                    </label>
+                    <select
+                        class="form-select"
+                        name="program_type">
+                        <option value>All</option>
+                        <option value="FDP"
+                            {% if request.args.get("program_type")=="FDP"
+                            %}selected{% endif %}>
+                            FDP
+                        </option>
+                        <option value="Workshop"
+                            {% if request.args.get("program_type")=="Workshop"
+                            %}selected{% endif %}>
+                            Workshop
+                        </option>
+                        <option value="Seminar"
+                            {% if request.args.get("program_type")=="Seminar"
+                            %}selected{% endif %}>
+                            Seminar
+                        </option>
+                        <option value="Conference"
+                            {% if request.args.get("program_type")=="Conference"
+                            %}selected{% endif %}>
+                            Conference
+                        </option>
+                        <option value="Webinar"
+                            {% if request.args.get("program_type")=="Webinar"
+                            %}selected{% endif %}>
+                            Webinar
+                        </option>
+                    </select>
+                </div>
+                <!-- Sort -->
+                <div class="col-lg-2">
+                    <label class="form-label">
+                        Sort
+                    </label>
+                    <select
+                        class="form-select"
+                        name="sort">
+                        <option value="newest"
+                            {% if request.args.get("sort","newest")=="newest"
+                            %}selected{% endif %}>
+                            Newest
+                        </option>
+                        <option value="oldest"
+                            {% if request.args.get("sort")=="oldest"
+                            %}selected{% endif %}>
+                            Oldest
+                        </option>
+                        <option value="faculty_asc"
+                            {% if request.args.get("sort")=="faculty_asc"
+                            %}selected{% endif %}>
+                            Faculty A-Z
+                        </option>
+                        <option value="faculty_desc"
+                            {% if request.args.get("sort")=="faculty_desc"
+                            %}selected{% endif %}>
+                            Faculty Z-A
+                        </option>
+                    </select>
+                </div>
+                <!-- Search Button -->
+                <div class="col-lg-2 d-grid">
+                    <button
+                        type="submit"
+                        class="btn btn-primary">
+                        <i class="bi bi-search"></i>
+                        Search
+                    </button>
+                </div>
+                <div class="col-lg-2 d-grid">
+                    <a
+                        href="https://docs.google.com/spreadsheets/d/{{ spreadsheet_id }}/export?format=xlsx"
+                        class="btn btn-success">
+                        <i class="bi bi-file-earmark-excel"></i>
+                        Export Excel
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="card shadow-sm">
+    <div class="card-header">
+        <h4 class="mb-0">
+            <i class="bi bi-table"></i>
+            Submissions
+        </h4>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>Faculty</th>
+                        <th>Program</th>
+                        <th>Type</th>
+                        <th>Organizer</th>
+                        <th>Venue</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Certificate</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% if submissions %}
+                    {% for row in submissions %}
+
+                    <tr>
+                        <td>{{ ((page - 1) * per_page) + loop.index }}</td>
+                        <td>{{ row.faculty }}</td>
+                        <td>{{ row.program_name }}</td>
+                        <td>{{ row.program_type }}</td>
+                        <td>{{ row.organizer }}</td>
+                        <td>{{ row.venue }}</td>
+                        <td>{{ row.start_date }}</td>
+                        <td>{{ row.end_date }}</td>
+                        <td>
+                            <a href="{{ row.drive_link }}"
+                                target="_blank"
+                                class="btn btn-sm btn-primary">
+                                <i class="bi bi-box-arrow-up-right"></i>
+                                View
+                            </a>
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+                    {% else %}
+                    <tr>
+                        <td colspan="8" class="text-center text-muted py-4">
+                            <i class="bi bi-inbox"></i><br>
+                            No submissions available.
+                        </td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+
+            <div class="d-flex justify-content-between align-items-center mt-4">
+                <a
+                    class="btn btn-primary rounded-pill px-4 {% if page <= 1 %}disabled{% endif %}"
+                    href="{{ url_for(
+            'admin',
+            page=page-1,
+            search=request.args.get('search'),
+            program_type=request.args.get('program_type'),
+            sort=request.args.get('sort')
+        ) }}">
+                    <i class="bi bi-chevron-left"></i>
+                    Previous
+                </a>
+                <span>
+                    Page {{ page }} of {{ total_pages }}
+                </span>
+                <a
+                    class="btn btn-primary rounded-pill px-4 {% if page >= total_pages %}disabled{% endif %}"
+                    href="{{ url_for(
+            'admin',
+            page=page+1,
+            search=request.args.get('search'),
+            program_type=request.args.get('program_type'),
+            sort=request.args.get('sort')
+        ) }}">
+                    Next
+                    <i class="bi bi-chevron-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="facultyModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    Faculty Members
+                </h5>
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal">
+                </button>
+            </div>
+            <div class="modal-body">
+                <ul class="list-group">
+                    {% for member in faculties %}
+                    <li class="list-group-item">
+                        {{ member.faculty }}
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

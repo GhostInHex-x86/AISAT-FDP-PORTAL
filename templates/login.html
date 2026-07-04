@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}
+Login
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center align-items-center"
+    style="min-height:75vh;">
+    <div class="col-md-5 col-lg-4">
+        <div class="card shadow">
+            <div class="card-body p-4">
+                <img
+                    src="{{ url_for('static', filename='images/logo.png') }}"
+                    alt="College Logo"
+                    class="img-fluid mb-3 d-block mx-auto"
+                    style="max-height: 90px;">
+                <h2 class="text-center mb-4">
+                    FDP Portal
+                </h2>
+                <p class="text-center text-muted mb-4">
+                    Faculty Login
+                </p>
+                <form method="POST">
+                    <div class="mb-3">
+                        <label class="form-label">
+                            Username
+                        </label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            name="username"
+                            required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label">
+                            Password
+                        </label>
+                        <input
+                            type="password"
+                            class="form-control"
+                            name="password"
+                            required>
+                    </div>
+                    <button
+                        type="submit"
+                        class="btn btn-primary w-100">
+                        Login
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
